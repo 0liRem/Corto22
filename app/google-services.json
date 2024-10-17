@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "96441520491",
+    "project_id": "examencorto2",
+    "storage_bucket": "examencorto2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96441520491:android:2c674a916e9b628d7e3c2e",
+        "android_client_info": {
+          "package_name": "com.Olivier.corto22"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlpcQVHP3CTe4IuisEmW9XwAvHlpu_Um0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
