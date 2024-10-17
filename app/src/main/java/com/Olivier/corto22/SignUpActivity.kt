@@ -7,10 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -43,37 +40,35 @@ class SignUpActivity : ComponentActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Usuario creado correctamente
+                    // Mostrar mensaje de éxito cuando la cuenta se crea en Firebase
+                    Toast.makeText(this, "Registro exitoso en Firebase", Toast.LENGTH_SHORT).show()
+
                     val user = auth.currentUser
                     user?.let {
-                        // Guardar los datos del usuario en Firestore
+                        // Crear el mapa de datos para Firestore
                         val userData = mapOf(
                             "uid" to user.uid,
                             "name" to name,
-                            "email" to email
+                            "mail" to email  // Cambié de "email" a "mail" para que coincida con Firestore
                         )
 
+                        // Guardar los datos en Firestore
                         firestore.collection("users")
                             .document(user.uid)
                             .set(userData)
                             .addOnSuccessListener {
-                                Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Datos guardados correctamente en Firestore", Toast.LENGTH_SHORT).show()
 
-                                // Redirigir a LoginActivity
-                                val intent = Intent(this, ChatListActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                                finish()  // Cerrar SignUpActivity y volver a LoginActivity
+                                // Redirigir a LoginActivity después del éxito en Firestore
+                                startActivity(Intent(this, LoginActivity::class.java))
                             }
-                            .addOnFailureListener { e ->
+                            .addOnFailureListener {
                                 Toast.makeText(this, "Error guardando usuario en Firestore", Toast.LENGTH_SHORT).show()
-
                             }
                     }
                 } else {
                     // Mostrar error si falla el registro
                     Toast.makeText(this, "Error en el registro: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ChatListActivity::class.java)
                 }
             }
     }

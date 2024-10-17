@@ -7,16 +7,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.input.KeyboardType
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
@@ -34,7 +31,7 @@ class LoginActivity : ComponentActivity() {
                     signInUser(email, password)
                 },
                 onSignUpClick = {
-                    // Navegar a la ventana de registro
+                    // Navegar a la pantalla de registro si no tiene cuenta
                     startActivity(Intent(this, SignUpActivity::class.java))
                 }
             )
@@ -45,10 +42,10 @@ class LoginActivity : ComponentActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Login exitoso, redirigir al ChatListActivity
+                    // Login exitoso, redirigir al ChatListActivity o a la pantalla de chats
                     Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, ChatListActivity::class.java))
-                    finish()
+                    finish() // Terminar LoginActivity para que no pueda regresar
                 } else {
                     // Mostrar mensaje de error si falla el login
                     Toast.makeText(this, "Error en el login: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -68,7 +65,7 @@ fun LoginScreen(onLoginClick: (String, String) -> Unit, onSignUpClick: () -> Uni
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Login", fontSize = 32.sp, modifier = Modifier.padding(bottom = 16.dp))
+        Text(text = "Iniciar Sesión", fontSize = 32.sp, modifier = Modifier.padding(bottom = 16.dp))
 
         OutlinedTextField(
             value = email,
